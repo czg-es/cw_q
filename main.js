@@ -302,7 +302,7 @@ const quotes = [
   {
     "Episode": "03x07",
     "Title": "Assassin",
-    "Quote": "The future has many paths_choose wisely.",
+    "Quote": "The future has many paths, choose wisely.",
     "Desc": "Having volunteered to protect Senator Padmé Amidala during a political mission to Alderaan, Padawan Ahsoka Tano is plagued by recurring visions of the presumed dead bounty hunter Aurra Sing assassinating the senator."
   },
   {
@@ -380,7 +380,7 @@ const quotes = [
   {
     "Episode": "03x20",
     "Title": "Citadel Rescue",
-    "Quote": "Without honor,victory is hollow.",
+    "Quote": "Without honor, victory is hollow.",
     "Desc": "While finding their way out of the Citadel prison which is under the command of the Separatist Osi Sobeck, the elite team's ship was destroyed, forcing them to wait for the rescue by Republic fleet. Along the way to rendezvous point they encounter waves of droid squads, which they have to fight in order to evacuate freed prisoners and save the information they hold. The Jedi attempt to escape, but are cornered by a pack of anoobas who kill Even Piell. But before he dies, he gives his half of the information to Ahsoka, telling her not to reveal it to anyone but the Jedi Council. But as the Jedi are about to escape, they are cornered by Sobeck who tries to kill Tarkin, but is stabbed and killed by Ahsoka. Plo Koon then arrives and rescues the Jedi, taking them back to Coruscant."
   },
   {
@@ -776,7 +776,6 @@ const quotes = [
 ]
 
 var rand = Math.floor(Math.random() * quotes.length);
-//console.log(rand);
 
 
 var quote = quotes[rand]["Quote"];
@@ -784,21 +783,70 @@ var q_title = quotes[rand]["Title"];
 var episode = quotes[rand]["Episode"];
 var description = quotes[rand]["Desc"];
 var container = document.getElementById('quote');
-//var title = document.getElementById('title');
 var tooltip = document.getElementById('tooltip');
+
 container.innerHTML = quote;
-//title.innerHTML = "S"+episode+"-"+q_title;
 tooltip.innerHTML += '<span class="tooltiptext">'+"S"+episode+"<br>"+q_title+'<br></span>';
 
-
 console.log(quote);
-console.log(episode);
+console.log(episode+' '+q_title);
 console.log(description);
 
 
+async function translate2(quote){
+  const res = fetch("https://libretranslate.de/translate", {
+    method: "POST",
+    body: JSON.stringify({
+      q: quote,
+      source: "en",
+      target: "es",
+      format: "text"
+    }),
+    headers: { "Content-Type": "application/json" }
+  }).then(response => response.json())
+  .then(data => quote = data)
+  .then( function () {
+    var cita = quote['translatedText'];
+    console.log(cita);
+    document.getElementById('quote').innerHTML = cita;
+    return quote['translatedText'];
 
+  });
 
+} 
 
+btn = document.getElementById('l_img');
 
+const queryString = window.location.search;
+//default lang = en
+if (queryString == ""){
+  window.location ="index.html?l=en"
+}
 
+const urlParams = new URLSearchParams(queryString);
+let lang = urlParams.get('l')
+console.log(lang);
+if(lang == "es"){
+  btn.src = "es.png"
+  var cita = translate2(quote);
+}
+        
+function change_lang(){
+if(lang == "en"){
+    es();
+    return;
+    }
+en();
+}
 
+function es(){
+    btn.src = "es.png"
+    lang = "es"
+    window.location = "index.html?l=es"            
+}
+function en(){
+    btn.src = "en.png"
+    lang = "en"
+    window.location ="index.html?l=en"
+    
+}        
