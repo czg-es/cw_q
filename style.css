@@ -43,7 +43,7 @@ body{
 .tooltip{
     color:#236787;
     font-family: 'Libre Franklin', sans-serif;
-    font-size: 1rem;
+    font-size: 2rem;
     cursor: url('./DeathStar.cur'), auto;
 }
 /* Tooltip text */
